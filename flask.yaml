@@ -97,7 +97,7 @@ spec:
         value: 4
         periodSeconds: 60
       - type: Percent
-        value: 25
+        value: 20
         periodSeconds: 60
 ---
 #creating a service account so flask is recognizeable in the k8s env and can communicate with the kubernetel control plane via its api ( for future uses such as interacting with other pods )
