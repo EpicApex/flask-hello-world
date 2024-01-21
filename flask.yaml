@@ -29,6 +29,14 @@ spec:
       containers:
       - name: flask-hello-world
         image: bonvoyage/flask-hello-world:1.0.0
+        #understanding flask application requests and limits using LOCUST - https://learnk8s.io/setting-cpu-memory-limits-requests
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "25m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
         ports:
         - containerPort: 5000
         livenessProbe:
