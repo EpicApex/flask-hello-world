@@ -39,12 +39,12 @@ def update_k8s_manifest(manifest_file, image_tag):
         documents = list(yaml.safe_load_all(file))
 
     for doc in documents:
-        # Check if the document is a Deployment and has the specified name
+        # Check if the document is a Deployment - bascially look for the deployment manifest from all of the manifests inside the flask.yaml
         if doc.get('kind', '') == 'Deployment':
             # Update the image in the manifest
             container = doc['spec']['template']['spec']['containers'][0]  # First container
             current_image = container['image']
-            new_image = f"{current_image.split(':')[0]}:{image_tag}"
+            new_image = f"{current_image.split(':')[0]}:{image_tag}" # Split strings to grab the image tag without the current version and attach the new image_tag object (new version) provided in the function signature.
             container['image'] = new_image
 
     # Write the updated documents back to the file
@@ -52,6 +52,14 @@ def update_k8s_manifest(manifest_file, image_tag):
         yaml.dump_all(documents, file)
 
 def main(repo, component, manifest_file):
+    if not repo:
+        return f"Repository object is empty"
+    if not component:
+        return f"Component object is empty"
+    if not manifest_file:
+        return f"Manifest file object is empty"
+    
+    #Assuming current_flask_app_version to always be in the root repo folder
     script_dir = os.path.dirname(os.path.abspath(__file__))
     version_file_path = os.path.join(script_dir, "current_flask_app_version.txt")
 
